@@ -14,7 +14,7 @@ app.post("/api/data", (req, res) => {
 
   // You can add your processing logic here
 
-  res.status(200).send({ message: "Data received successfully", data: data });
+  res.status(200).send("OK");
 });
 
 // Start the server
