@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/duykien2901/test-sbpayment/issues"
   },
-  "homepage": "https://github.com/duykien2901/test-sbpayment#readme"
+  "homepage": "https://github.com/duykien2901/test-sbpayment#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
