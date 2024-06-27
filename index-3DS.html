@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0.1//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html lang="ja"> 
+<head> 
+    <script type="text/javascript" src="https://stbtoken.sps-system.com/sbpstoken/com_sbps_system_tds2infotoken.js"></script> 
+    <script type="text/javascript">
+    function doSubmit(){ 
+      console.log("first")
+       com_sbps_system_tds2.generateToken({
+            merchantId : document.getElementById('merchant_id').value,
+            serviceId : document.getElementById('service_id').value,
+            email : document.getElementById('email').value,
+        }, afterGenerateToken); 
+    } 
+ 
+    var afterGenerateToken = function(response) {
+        if (response.result == "OK") {
+          console.log(JSON.stringify(response))
+            // document.getElementById('token').value = response.tokenResponse.3ds2infoToken;             
+            // document.getElementById('tokenKey').value = response.tokenResponse.3ds2infoTokenKey; 
+ 
+            if(window.confirm('トークン取得しました。決済を実施します。')){ 
+                document.getElementById('frm').submit(); 
+            } else { 
+                alert("キャンセルしました。"); 
+            } 
+        } else { 
+            alert('トークン取得に失敗しました。'); 
+        } 
+    } 
+    </script> 
+</head> 
+<body> 
+    <h1>トークン生成サンプル</h1> 
+    <form name="frm" id="frm" method="POST" action="Confirm.jsp"> 
+ 
+    <dl> 
+        <dt>マーチャントID</dt> 
+        <dd><input type="text" id="merchant_id" name="merchant_id" maxlength="5" value="56943"></dd>         <dt>サービスID</dt> 
+        <dd><input type="text" id="service_id" name="service_id" maxlength="3" value="001"></dd> 
+        <dt>請求先名前（姓）</dt> 
+        <dd><input type="text" id="billingLastName" name="billingLastName" maxlength="22" value="決済"></dd> 
+
+ 
+        <dt>お届先住所ビル・マンション名</dt> 
+        <dd><input type="text" id="shippingAddress3" name="shippingAddress3" maxlength="50" value=""></dd>         <dt>Emailアドレス</dt> 
+        <dd><input type="text" id="email" name="email" maxlength="254" value="exsampl@email.com"></dd> 
+    </dl> 
+    <dl> 
+        <dt>トークン</dt> 
+        <dd><input type="text" id="3ds2infoToken" name="token" value="" disabled></dd> 
+        <dt>トークンキー</dt> 
+        <dd><input type="text" id="3ds2infoTokenKey" name="tokenKey" value="" disabled></dd> 
+    </dl> 
+        <table> 
+            <tr><td> 
+            <input type="button" name="btnSend" id="btnSend" value="送信" onClick="doSubmit()">             
+            <input type="reset" name="btnReset" id="btnReset" value="リセット"> 
+            </td></tr> 
+        </table> 
+    </form> 
+</body> 
+</html>

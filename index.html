@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0. 1//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="ja">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha1/0.6.0/sha1.min.js"></script>
+    <script type="text/javascript">
+      function f_submit() {
+        var des = "https://late-foxes-beam.loca.lt";
+        var order = new Order();
+        order.merchant_id = "56943";
+        order.service_id = "001";
+        order.cust_code = "Merchant_TestUser_1000";
+        order.success_url = `https://test-sbpayment.onrender.com/api/datades}/api/sbps/success`;
+        order.cancel_url = "https://test-sbpayment.onrender.com/api/data";
+        order.error_url = "https://test-sbpayment.onrender.com/api/data";
+        order.pagecon_url = `https://test-sbpayment.onrender.com/api/data`;
+        order.request_date = getYYYYMMDDHHMMSS();
+        order.hashkey = "6bf1c1ea758871c3dc9deaaf23fda59f53aca89d";
+
+        //チェックサム
+        order.sps_hashcode = sha1(order.toString());
+        console.log(order.toString())
+        feppost(order);
+      }
+
+      // オブジェクト定義[Order]
+      function Order() {
+        this.orderDetail = new Array();
+        this.toString = function () {
+          var result =
+            this.merchant_id +
+            this.service_id +
+            this.cust_code +
+            this.success_url +
+            this.cancel_url +
+            this.error_url +
+            this.pagecon_url +
+            this.request_date +
+            this.hashkey;
+          return result;
+        };
+      }
+
+      // 日時の取得
+      function getYYYYMMDDHHMMSS() {
+        var now = new Date(
+          new Date().toLocaleString("ja-JP", {
+            timeZone: "Asia/Tokyo",
+          })
+        );
+        return (
+          now.getFullYear() +
+          zeroPadding(now.getMonth() + 1) +
+          zeroPadding(now.getDate()) +
+          zeroPadding(now.getHours()) +
+          zeroPadding(now.getMinutes()) +
+          zeroPadding(now.getSeconds())
+        );
+      }
+
+      function zeroPadding(num) {
+        if (num < 10) {
+          num = "0" + num;
+        }
+        return num + "";
+      }
+
+      function feppost(order) {
+        // var connectUrl =
+        //   "https://stbfep.sps-system.com/f01/FepBuyInfoReceive.do";
+          // var connectUrl =
+          // "https://stbfep.sps-system.com/Extra/BuyRequestAction.do";
+            var connectUrl =
+            "https://stbfep.sps-system.com/f04/FepPayInfoReceive.do";
+          
+        var form = $("<form></form>", {
+          action: connectUrl,
+          target: "receiver",
+          method: "POST",
+        }).hide();
+
+        var body = $("body");
+        body.append(form);
+        form.append(
+          $("<input>", {
+            type: "hidden",
+            name: "merchant_id",
+            value: order.merchant_id,
+          })
+        );
+        form.append(
+          $("<input>", {
+            type: "hidden",
+            name: "service_id",
+            value: order.service_id,
+          })
+        );
+        form.append(
+          $("<input>", {
+            type: "hidden",
+            name: "cust_code",
+            value: order.cust_code,
+          })
+        );
+        form.append(
+          $("<input>", {
+            type: "hidden",
+            name: "success_url",
+            value: order.success_url,
+          })
+        );
+        form.append(
+          $("<input>", {
+            type: "hidden",
+            name: "cancel_url",
+            value: order.cancel_url,
+          })
+        );
+        form.append(
+          $("<input>", {
+            type: "hidden",
+            name: "error_url",
+            value: order.error_url,
+          })
+        );
+        form.append(
+          $("<input>", {
+            type: "hidden",
+            name: "pagecon_url",
+            value: order.pagecon_url,
+          })
+        );
+        form.append(
+          $("<input>", {
+            type: "hidden",
+            name: "request_date",
+            value: order.request_date,
+          })
+        );
+        form.append(
+          $("<input>", {
+            type: "hidden",
+            name: "sps_hashcode",
+            value: order.sps_hashcode,
+          })
+        );
+
+        form.submit();
+      }
+    </script>
+  </head>
+  <body>
+    <h1>トークン生成サンプル</h1>
+    <button onclick="f_submit()">トークン生成</button>
+  </body>
+</html>
