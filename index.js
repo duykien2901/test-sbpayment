@@ -13,7 +13,7 @@ app.post("/api/data", (req, res) => {
   const data = req.body;
   console.log("req:", req);
 
-  res.status(200).send("OK1");
+  res.status(200).send("OK");
 });
 
 function zeroPadding(num) {
