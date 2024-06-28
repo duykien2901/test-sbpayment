@@ -28,6 +28,7 @@ const port = 3000;
 app.use(
   bodyParser.json({
     verify: function (req, res, buf) {
+      console.log(buf, buf.toString());
       // const url = req.originalUrl;
       // if (url.startsWith("/api/stripe/webhook")) {
       //   req.rawBody = buf.toString();
