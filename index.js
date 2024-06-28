@@ -7,23 +7,25 @@ var Sha1 = require("sha1");
 const app = express();
 const port = 3000;
 
-// app.use((req, res, next) => {
-//   let data = [];
-//   req.on("data", (chunk) => {
-//     data.push(chunk);
-//   });
-//   req.on("end", () => {
-//     data = Buffer.concat(data);
-//     const contentType = req.headers["content-type"] || "";
-//     if (contentType.includes("charset=Shift_JIS")) {
-//       req.body = iconv.decode(data, "Shift_JIS");
-//     } else {
-//       console.log("data.toString() :>> ", data.toString());
-//       req.body = data.toString();
-//     }
-//     next();
-//   });
-// });
+app.use((req, res, next) => {
+  let data = [];
+  req.on("data", (chunk) => {
+    data.push(chunk);
+  });
+  req.on("end", () => {
+    data = Buffer.concat(data);
+    const contentType = req.headers["content-type"] || "";
+    if (contentType.includes("charset=Shift_JIS")) {
+      console.log(1);
+      req.body = iconv.decode(data, "Shift_JIS");
+    } else {
+      console.log(2);
+      console.log("data.toString() :>> ", data.toString());
+      req.body = data.toString();
+    }
+    next();
+  });
+});
 
 app.use(
   bodyParser.json({
